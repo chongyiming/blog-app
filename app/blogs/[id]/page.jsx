@@ -18,7 +18,7 @@ const page = ({ params }) => {
   }, []);
   return data ? (
     <>
-      <div className="bg-gray-200 py-5 px-5 md:px-12 lg:px-28">
+      <div className="bg-gray-200 py-5 px-5 md:px-12 lg:px-28 ">
         <div className="flex justify-between items-center">
           <Link href="/">
             <Image
@@ -48,13 +48,13 @@ const page = ({ params }) => {
           </p>
         </div>
       </div>
-      <div className="mx-5 max-w-[800px] md:mx-auto mt-[-100px] mb-10">
-        <Image
+      <div className="mx-5 max-w-[800px] md:mx-auto mt-[-100px] mb-10 ">
+        {/* <Image
           className="border-4 border-white"
           src={data.image}
           width={1280}
           height={720}
-        />
+        /> */}
         <h1 className="my-8 text-[26px] font-semibold">Introduction:</h1>
         <div
           className="blog-content"

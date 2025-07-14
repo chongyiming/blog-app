@@ -5,12 +5,12 @@ import Image from "next/image";
 import { toast } from "react-toastify";
 import axios from "axios";
 const page = () => {
-  const [image, setImage] = useState(false);
+  // const [image, setImage] = useState(false);
   const [data, setData] = useState({
     title: "",
     description: "",
     category: "Startup",
-    author: "Alex Bennett",
+    author: "Chong Yi Ming",
     authorImg: "/profile_icon.png",
   });
 
@@ -29,16 +29,16 @@ const page = () => {
     formData.append("category", data.category);
     formData.append("author", data.author);
     formData.append("authorImg", data.authorImg);
-    formData.append("image", image);
+    // formData.append("image", image);
     const response = await axios.post("/api/blog", formData);
     if (response.data.success) {
       toast.success(response.data.msg);
-      setImage(false);
+      // setImage(false);
       setData({
         title: "",
         description: "",
         category: "Startup",
-        author: "Alex Bennett",
+        author: "Chong Yi Ming",
         authorImg: "/profile_icon.png",
       });
     } else {
@@ -48,8 +48,8 @@ const page = () => {
   return (
     <>
       <form onSubmit={onSubmitHandler} className="pt-5 px-5 sm:pt-12 sm:pl-16">
-        <p className="text-xl">Upload thumbnail</p>
-        <label htmlFor="image">
+        {/* <p className="text-xl">Upload thumbnail</p> */}
+        {/* <label htmlFor="image">
           <Image
             className="mt-4"
             src={!image ? assets.upload_area : URL.createObjectURL(image)}
@@ -63,7 +63,7 @@ const page = () => {
           id="image"
           hidden
           required
-        />
+        /> */}
         <p className="text-xl mt-4">Blog Title</p>
         <input
           name="title"

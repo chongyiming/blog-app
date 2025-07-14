@@ -22,6 +22,7 @@ const BlogTableItem = ({
           src={authorImg ? authorImg : assets.profile_icon}
           width={40}
           height={40}
+          className="rounded-full"
         />
         <p>{author ? author : "No author"}</p>
       </th>
