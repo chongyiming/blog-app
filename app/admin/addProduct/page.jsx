@@ -1,18 +1,26 @@
 "use client";
 import { assets } from "@/Assets/assets";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { toast } from "react-toastify";
 import axios from "axios";
 const page = () => {
   // const [image, setImage] = useState(false);
+  const [email, setEmail] = useState("");
   const [data, setData] = useState({
     title: "",
     description: "",
     category: "Startup",
-    author: "Chong Yi Ming",
-    authorImg: "/profile_icon.png",
+    author: email,
+    // authorImg: "/profile_icon.png",
   });
+
+  useEffect(() => {
+    const userInfo = sessionStorage.getItem("user");
+    if (userInfo) {
+      setEmail(JSON.parse(userInfo).email);
+    }
+  }, []);
 
   const onChangeHandler = (event) => {
     const name = event.target.name;
@@ -27,8 +35,8 @@ const page = () => {
     formData.append("title", data.title);
     formData.append("description", data.description);
     formData.append("category", data.category);
-    formData.append("author", data.author);
-    formData.append("authorImg", data.authorImg);
+    formData.append("author", email);
+    // formData.append("authorImg", data.authorImg);
     // formData.append("image", image);
     const response = await axios.post("/api/blog", formData);
     if (response.data.success) {
@@ -38,8 +46,8 @@ const page = () => {
         title: "",
         description: "",
         category: "Startup",
-        author: "Chong Yi Ming",
-        authorImg: "/profile_icon.png",
+        author: email,
+        // authorImg: "/profile_icon.png",
       });
     } else {
       toast.error("Error");

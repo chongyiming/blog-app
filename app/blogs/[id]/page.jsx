@@ -5,8 +5,11 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { GoogleLogin } from "@react-oauth/google";
+import { jwtDecode } from "jwt-decode";
 const page = ({ params }) => {
   const [data, setData] = useState(null);
+  const [signIn, setSignIn] = useState(false);
   const fetchBlogData = async () => {
     const response = await axios.get("/api/blog", {
       params: { id: params.id },
@@ -16,6 +19,13 @@ const page = ({ params }) => {
   useEffect(() => {
     fetchBlogData();
   }, []);
+
+  useEffect(() => {
+    const userInfo = sessionStorage.getItem("user");
+    if (userInfo) {
+      setSignIn(true);
+    }
+  }, [signIn]);
   return data ? (
     <>
       <div className="bg-gray-200 py-5 px-5 md:px-12 lg:px-28 ">
@@ -27,22 +37,39 @@ const page = ({ params }) => {
               className="w-[130px] sm:w-auto"
             />
           </Link>
-          <Link href="/admin">
-            <button className="flex items-center gap-2 font-medium py-1 px-3 sm:py-3 sm:px-6 border border-black shadow-[-7px_7px_0px_#000000]">
-              Get started <Image src={assets.arrow} />
-            </button>
-          </Link>
+          {signIn ? (
+            <Link href="/admin/addProduct">
+              <button className="flex items-center gap-2 font-medium py-1 px-3 sm:py-3 sm:px-6 border border-solid border-black shadow-[-7px_7px_0px_#000000]">
+                Get started <Image src={assets.arrow} />
+              </button>
+            </Link>
+          ) : (
+            <GoogleLogin
+              onSuccess={(credentialResponse) => {
+                console.log(credentialResponse);
+
+                const decoded = jwtDecode(credentialResponse.credential);
+                console.log(decoded); // This contains user info: name, email, picture, etc.
+
+                sessionStorage.setItem("user", JSON.stringify(decoded));
+                setSignIn(true);
+              }}
+              onError={() => {
+                console.log("Login Failed");
+              }}
+            />
+          )}
         </div>
         <div className="text-center my-24">
           <h1 className="text-2xl sm:text-5xl font-semibold max-w-[700px] mx-auto">
             {data.title}
           </h1>
-          <Image
+          {/* <Image
             className="mx-auto mt-6 border border-white rounded-full"
             src={data.authorImg}
             width={60}
             height={60}
-          />
+          /> */}
           <p className="mt-1 pb-2 text-lg max-w-[740px] mx-auto">
             {data.author}
           </p>

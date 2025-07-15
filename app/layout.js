@@ -1,11 +1,11 @@
 import { Outfit } from "next/font/google";
 import "./globals.css";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 
 const outfit = Outfit({
   subsets: ["latin"],
-  weight: ["400","500","600","700"]
+  weight: ["400", "500", "600", "700"],
 });
-
 
 export const metadata = {
   title: "Blog App",
@@ -15,10 +15,10 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body
-        className={outfit.className}
-      >
-        {children}
+      <body className={outfit.className}>
+        <GoogleOAuthProvider clientId="485822052532-gurij2e7c2pk0hsrvkobb9c31ha26mvl.apps.googleusercontent.com">
+          {children}
+        </GoogleOAuthProvider>
       </body>
     </html>
   );
