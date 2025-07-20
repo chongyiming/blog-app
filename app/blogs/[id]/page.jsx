@@ -49,9 +49,11 @@ const page = ({ params }) => {
                 console.log(credentialResponse);
 
                 const decoded = jwtDecode(credentialResponse.credential);
-                console.log(decoded); // This contains user info: name, email, picture, etc.
+                console.log(decoded);
 
-                sessionStorage.setItem("user", JSON.stringify(decoded));
+                // sessionStorage.setItem("user", JSON.stringify(decoded));
+                sessionStorage.setItem("user", credentialResponse.credential);
+
                 setSignIn(true);
               }}
               onError={() => {

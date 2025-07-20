@@ -3,13 +3,35 @@ import BlogTableItem from "@/Components/AdminComponents/BlogTableItem";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { jwtDecode } from "jwt-decode";
 
 const page = () => {
   const [blogs, setBlogs] = useState([]);
+  const [email, setEmail] = useState("");
+
+  useEffect(() => {
+  const userInfo = sessionStorage.getItem("user");
+  if (userInfo) {
+    const decoded = jwtDecode(userInfo);
+    if (decoded?.email) {
+      setEmail(decoded.email);
+      
+    }
+  }
+}, []);
+
+  useEffect(() => {
+  if (email) {
+    console.log(email)
+    fetchBlogs();
+  }
+}, [email]);
 
   const fetchBlogs = async () => {
-    const response = await axios.get("/api/blog");
-    setBlogs(response.data.blogs);
+
+    const response = await axios.get(`/api/blogs?email=${email}`);
+    console.log(response)
+    setBlogs(response.data);
   };
 
   const deleteBlog = async (mongoId) => {
@@ -22,9 +44,8 @@ const page = () => {
     fetchBlogs();
   };
 
-  useEffect(() => {
-    fetchBlogs();
-  }, []);
+
+
 
   return (
     <div className="flex-1 pt-5 px-5 sm:pt-12 sm:pl-16">

@@ -4,21 +4,23 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { toast } from "react-toastify";
 import axios from "axios";
+import { jwtDecode } from "jwt-decode";
+
 const page = () => {
-  // const [image, setImage] = useState(false);
   const [email, setEmail] = useState("");
   const [data, setData] = useState({
     title: "",
     description: "",
     category: "Startup",
     author: email,
-    // authorImg: "/profile_icon.png",
   });
 
   useEffect(() => {
     const userInfo = sessionStorage.getItem("user");
-    if (userInfo) {
-      setEmail(JSON.parse(userInfo).email);
+    const decoded = jwtDecode(userInfo);
+    console.log(decoded.email);
+    if (decoded) {
+      setEmail(decoded.email);
     }
   }, []);
 
