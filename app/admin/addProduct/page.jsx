@@ -17,11 +17,14 @@ const page = () => {
 
   useEffect(() => {
     const userInfo = sessionStorage.getItem("user");
-    const decoded = jwtDecode(userInfo);
-    console.log(decoded.email);
-    if (decoded) {
-      setEmail(decoded.email);
+    if (userInfo){
+      const decoded = jwtDecode(userInfo);
+      console.log(decoded.email);
+      if (decoded) {
+        setEmail(decoded.email);
     }
+    }
+    
   }, []);
 
   const onChangeHandler = (event) => {
@@ -38,12 +41,9 @@ const page = () => {
     formData.append("description", data.description);
     formData.append("category", data.category);
     formData.append("author", email);
-    // formData.append("authorImg", data.authorImg);
-    // formData.append("image", image);
     const response = await axios.post("/api/blog", formData);
     if (response.data.success) {
       toast.success(response.data.msg);
-      // setImage(false);
       setData({
         title: "",
         description: "",
@@ -55,7 +55,7 @@ const page = () => {
       toast.error("Error");
     }
   };
-  return (
+  return (email?(
     <>
       <form onSubmit={onSubmitHandler} className="pt-5 px-5 sm:pt-12 sm:pl-16">
         {/* <p className="text-xl">Upload thumbnail</p> */}
@@ -111,7 +111,7 @@ const page = () => {
           ADD
         </button>
       </form>
-    </>
+    </>):("")
   );
 };
 

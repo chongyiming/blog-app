@@ -7,7 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 export default function Home() {
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen py-10">
       <ToastContainer theme="dark" />
       <Header />
       <main className="flex-1">
